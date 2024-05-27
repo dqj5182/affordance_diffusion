@@ -57,7 +57,7 @@ def load_up():
 
     model.eval()
     model.to(device)
-    model.load_state_dict(load_checkpoint('upsample', device))
+    model.load_state_dict(torch.load('../upsample.pt', device))
     print('total base parameters', sum(x.numel() for x in model.parameters()))
     return model, diffusion, options_up
 
@@ -70,7 +70,7 @@ def load_denoise_base():
     model, diffusion = create_model_and_diffusion(**options)
     model.eval()
     model.to(device)
-    model.load_state_dict(load_checkpoint('base', device))
+    model.load_state_dict(torch.load('../base.pt', device))
     print('total base parameters', sum(x.numel() for x in model.parameters()))
     return model, diffusion, options
 

@@ -29,6 +29,7 @@
 
 from argparse import ArgumentParser
 import os
+import torch
 import os.path as osp
 from typing import Tuple
 from tqdm import tqdm
@@ -42,7 +43,7 @@ import torch as th
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, ConcatDataset
 
-from glide_text2im.download import load_checkpoint
+# from glide_text2im.download import load_checkpoint
 from glide_text2im.model_creation import (
     create_model_and_diffusion,
     model_and_diffusion_defaults,
@@ -85,7 +86,7 @@ def load_base():
         model.convert_to_fp16()
     model.to(device)
     if args.base_ckpt is None:
-        model.load_state_dict(load_checkpoint('base-inpaint', device))
+        model.load_state_dict(torch.load('../base_inpaint.pt', device))
     else:
         model.load_state_dict(th.load(args.base_ckpt))
     print('total base parameters', sum(x.numel() for x in model.parameters()))
@@ -103,7 +104,7 @@ def load_up():
     if has_cuda:
         model_up.convert_to_fp16()
     model_up.to(device)
-    model_up.load_state_dict(load_checkpoint('upsample-inpaint', device))
+    model_up.load_state_dict(torch.load('../upsample_inpaint.pt', device))
     print('total upsampler parameters', sum(x.numel() for x in model_up.parameters()))
     return model_up, diffusion_up, options_up
 
