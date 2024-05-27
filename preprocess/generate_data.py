@@ -303,6 +303,11 @@ def batch_main(args):
     glide['up'] = load_up()
     
     for i, data in tqdm(enumerate(dl), total=len(dl)):
+        if os.path.exists(data['out_file']): # pass all finished samples
+            continue
+        if 'ZY20210800001_H1_C2_N15_S93_s02_T2_frame0084.png' in data['inp_file']: # errorneous samples
+            continue
+
         if data is None:
             continue
         if args.num > 0 and i > args.num:

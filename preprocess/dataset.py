@@ -103,7 +103,10 @@ class HOI4D(Dataset):
         if not osp.exists(inp_file): json.dump(hoi_box.tolist(), open(inp_file, 'w'))
 
         inp_file = self.save_hoi.format(*save_index)
-        if not osp.exists(inp_file): imageio.imwrite(inp_file, hoi_image)
+        try:
+            if not osp.exists(inp_file): imageio.imwrite(inp_file, hoi_image)
+        except:
+            import pdb; pdb.set_trace()
 
         inp_file = self.save_mask.format(*save_index)
         if not osp.exists(inp_file): imageio.imwrite(inp_file, mask)
